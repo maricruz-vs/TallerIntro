@@ -60,7 +60,7 @@ def normalizar_palabra_clave(palabra):
     #quita repetidas
     letras_unicas = []
     for c in palabra:
-        if c in ALFABETO and c not in letras_unicas:
+        if c in alfabeto and c not in letras_unicas:
             letras_unicas.append(c)
     if len(letras_unicas) == 0:
         raise Exception("La palabra clave no contiene letras válidas (solo a-z, ñ)")
@@ -139,16 +139,16 @@ def procesar_texto_playfair(texto):
     i = 0
     while i < len(texto_sin_espacios):
         texto_procesado += texto_sin_espacios[i]
-        if i + 1 < len(texto_sin_espacios) and texto_sin_espacios[i] == texto_sin_espacios[i + 1]:
+        if i + 1 < len(texto_sin_espacios) and texto_sin_espacios[i] == texto_sin_espacios[i+1]:
             texto_procesado += "1"
-        i += 1
+        i+=1
     
     # Agrupar en pares
     pares = []
     i = 0
     while i < len(texto_procesado):
         if i + 1 < len(texto_procesado):
-            pares.append(texto_procesado[i] + texto_procesado[i + 1])
+            pares.append(texto_procesado[i] + texto_procesado[i+1])
         else:
             # Si es impar, agregar '1' al final
             pares.append(texto_procesado[i] + "1")
@@ -487,7 +487,40 @@ def railfenceCod(texto):
     Restricciones: texto no vacio
     """
     texto_norm = normalizar_texto(texto)
-    return "por implementar"
+    
+    texto_guiones = ""
+    for c in texto_norm:
+        if c == " ":
+            texto_guiones += "-"
+        else:
+            texto_guiones += c
+    
+    largo = len(texto_guiones)
+    while largo % 4 != 0:
+        texto_guiones += "-"
+        largo += 1
+    
+    linea1 = ""
+    linea2 = ""
+    linea3 = ""
+    
+    for i in range(largo):
+        resto = i % 4
+        if resto == 0:
+            linea1 += texto_guiones[i]
+        elif resto == 1 or resto == 3:
+            linea2 += texto_guiones[i]
+        else:
+            linea3 += texto_guiones[i]
+    
+    union = linea1 + linea2 + linea3
+    
+    resultado = ""
+    for i in range(0, len(union), 5):
+        resultado += union[i:i+5] + " "
+    
+    return resultado.strip()
+
 
 def railfenceDec(texto):
     """
@@ -496,7 +529,52 @@ def railfenceDec(texto):
     Salidas: texto original (str)
     Restricciones: texto no vacio
     """
-    return "por implementar"
+    union = ""
+    for c in texto:
+        if c != " ":
+            union += c
+    
+    if len(union) % 4 != 0:
+        raise Exception("El texto codificado no tiene longitud multiple de 4")
+    
+    largo_total = len(union)
+    largo_fila = largo_total // 4
+    
+    linea1 = union[:largo_fila]
+    linea2 = union[largo_fila:largo_fila + largo_fila * 2]
+    linea3 = union[largo_fila + largo_fila * 2:]
+    
+    resultado = ""
+    i1 = 0
+    i2 = 0
+    i3 = 0
+    
+    for i in range(largo_total):
+        resto = i % 4
+        if resto == 0:
+            resultado += linea1[i1]
+            i1 += 1
+        elif resto == 1:
+            resultado += linea2[i2]
+            i2 += 1
+        elif resto == 2:
+            resultado += linea3[i3]
+            i3 += 1
+        else:
+            resultado += linea2[i2]
+            i2 += 1
+    
+    resultado_final = ""
+    for c in resultado:
+        if c == "-":
+            resultado_final += " "
+        else:
+            resultado_final += c
+    
+    while resultado_final.endswith(" "):
+        resultado_final = resultado_final[:-1]
+    
+    return resultado_final
 
 # ESCITALA
 def escitalaCod(texto, lineas):
@@ -635,4 +713,6 @@ def main():
 
 
 if __name__ == "__main__":
+
+
     main()
