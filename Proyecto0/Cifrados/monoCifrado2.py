@@ -2,11 +2,7 @@ alfabeto = "abcdefghijklmnñopqrstuvwxyz"
 alfabeto_completo = "abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúÁÉÍÓÚ "
 
 
-############################################################
-
 # Funciones auxiliares
-
-############################################################
 
 #esto antes era revisionTexto
 def normalizar_texto(texto):
@@ -84,13 +80,7 @@ def validar_desplazamiento(desplazamiento):
     return desplazamiento
 
 
-############################################################
-
 # funciones decodificadoras
-
-############################################################
-
-
 
 def monoCod(texto, palabra):
     """
