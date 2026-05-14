@@ -37,8 +37,6 @@ def normalizar_texto(texto):
             resultado.append(c)
     return "".join(resultado)
 
-
-
 def normalizar_palabra_clave(palabra):
     """
     Normaliza la palabra clave: minúsculas, sin acentos, elimina letras repetidas,
@@ -68,20 +66,7 @@ def normalizar_palabra_clave(palabra):
         raise Exception("La palabra clave no contiene letras válidas (solo a-z, ñ)")
     return "".join(letras_unicas)
 
-def validar_desplazamiento(desplazamiento):
-    """
-    Valida que el desplazamiento sea entero.
-    Entradas: desplazamiento (cualquier tipo)
-    Salidas: int (el mismo desplazamiento)
-    Restricciones: debe ser entero
-    """
-    if type(desplazamiento) != int:
-        raise Exception("El desplazamiento debe ser un número entero")
-    return desplazamiento
-
-
-# funciones decodificadoras
-
+# MONOALFABETICO
 def monoCod(texto, palabra):
     """
     Algoritmo que codifica un texto utilizando una palabra clave para cambiar el alfabeto
@@ -91,33 +76,33 @@ def monoCod(texto, palabra):
     Salidas:
     Texto Codificado en mono cifrado según la palabra clave indicada.
     """
-    texto_norm = normalizar_texto(texto)
-    clave_norm = normalizar_palabra_clave(palabra)
+    texto_norm =normalizar_texto(texto)
+    clave_norm =normalizar_palabra_clave(palabra)
     
-    #palabra clave + resto del alfabeto en orden
-    resto = [c for c in alfabeto if c not in clave_norm]
-    alfabeto_cifrado = list(clave_norm) + resto
+    #palabra clave +resto del alfabeto en orden
+    resto =[c for c in alfabeto if c not in clave_norm]
+    alfabeto_cifrado =list(clave_norm) +resto
     
     # mapeo original a cifrada
-    mapeo = {}
+    mapeo ={}
     #enumerate crea una asignacion indice-letra
     #entonces se ve como (0,a) ... (27, z)
     # luego i seria 0 y letra_orig seria a
     for i, letra_orig in enumerate(alfabeto):
-        mapeo[letra_orig] = alfabeto_cifrado[i]
+        mapeo[letra_orig] =alfabeto_cifrado[i]
     
     
     # cambio en el texto
-    resultado = []
+    resultado =[]
     for c in texto_norm:
-        if c == " ":
+        if c ==" ":
             resultado.append(" ")
         else:
             resultado.append(mapeo[c])
     return "".join(resultado)
 
 def monoDec(texto, palabra):
-     """
+    """
     Algoritmo que decodifica un texto codificado en Cifrado Monoalfabético
     Entradas y restricciones:
     Palabra calve: Debe ser un string que use unicamente letras del alfabeto.
@@ -125,22 +110,22 @@ def monoDec(texto, palabra):
     Salidas:
     Texto Codificado en mono cifrado según la palabra clave indicada.
     """
-    texto_norm = normalizar_texto(texto) 
-    clave_norm = normalizar_palabra_clave(palabra)
+    texto_norm =normalizar_texto(texto)
+    clave_norm =normalizar_palabra_clave(palabra)
     
     # alfabeto para cifrar
-    resto = [c for c in alfabeto if c not in clave_norm]
-    alfabeto_cifrado = list(clave_norm) + resto
+    resto =[c for c in alfabeto if c not in clave_norm]
+    alfabeto_cifrado =list(clave_norm) + resto
     
     # mapeo inverso de cod a og
-    mapeo_inverso = {}
+    mapeo_inverso ={}
     for i, letra_cifrada in enumerate(alfabeto_cifrado):
-        mapeo_inverso[letra_cifrada] = alfabeto[i]
+        mapeo_inverso[letra_cifrada] =alfabeto[i]
     
     # cambia el texto 
-    resultado = []
+    resultado =[]
     for c in texto_norm:
-        if c == " ":
+        if c ==" ":
             resultado.append(" ")
         else:
             if c not in mapeo_inverso:

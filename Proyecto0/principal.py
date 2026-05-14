@@ -1,5 +1,4 @@
-alfabeto = "abcdefghijklmnñopqrstuvwxyz"
-
+alfabeto ="abcdefghijklmnñopqrstuvwxyz"
 
 ########################################################################################################
 # Funciones auxiliares
@@ -12,28 +11,28 @@ def normalizar_texto(texto):
     Salidas: str normalizado
     Restricciones: texto debe ser string no vacío
     """
-    if type(texto) != str:
+    if type(texto) !=str:
         raise Exception("El texto debe ser un string")
-    if len(texto.strip()) == 0:
+    if len(texto.strip()) ==0:
         raise Exception("El texto no puede estar vacío")
     
     #aqui las hace minusculas
-    texto = texto.lower()
-    resultado = []
+    texto =texto.lower()
+    resultado =[]
     for c in texto:
         #quita tildes
         if c in "á":
-            c = "a"
+            c ="a"
         elif c in "é":
-            c = "e"
+            c ="e"
         elif c in "í":
-            c = "i"
+            c ="i"
         elif c in "ó":
-            c = "o"
+            c ="o"
         elif c in "ú":
-            c = "u"
+            c ="u"
         # conserva letras del alfabeto (incluyendo ñ) y espacios
-        if c in alfabeto or c == " ":
+        if c in alfabeto or c ==" ":
             resultado.append(c)
     return "".join(resultado)
 
@@ -45,24 +44,24 @@ def normalizar_palabra_clave(palabra):
     Salidas: str con letras únicas en orden de aparición
     Restricciones: palabra no vacía, sin espacios, solo letras
     """
-    if type(palabra) != str:
+    if type(palabra) !=str:
         raise Exception("La palabra clave debe ser un string")
-    if len(palabra.strip()) == 0:
+    if len(palabra.strip()) ==0:
         raise Exception("La palabra clave no puede estar vacía")
     if " " in palabra:
         raise Exception("La palabra clave no debe contener espacios")
 
     #minuscula
-    palabra = palabra.lower()
+    palabra =palabra.lower()
     #quita tildes, este metodo es mas eficiente y se ve mas bonito
-    palabra = palabra.replace("á","a").replace("é","e").replace("í","i").replace("ó","o").replace("ú","u")
+    palabra =palabra.replace("á","a").replace("é","e").replace("í","i").replace("ó","o").replace("ú","u")
     
     #quita repetidas
-    letras_unicas = []
+    letras_unicas =[]
     for c in palabra:
         if c in alfabeto and c not in letras_unicas:
             letras_unicas.append(c)
-    if len(letras_unicas) == 0:
+    if len(letras_unicas) ==0:
         raise Exception("La palabra clave no contiene letras válidas (solo a-z, ñ)")
     return "".join(letras_unicas)
 
@@ -74,7 +73,7 @@ def validar_desplazamiento(desplazamiento):
     Salidas: int (el mismo desplazamiento)
     Restricciones: debe ser entero
     """
-    if type(desplazamiento) != int:
+    if type(desplazamiento) !=int:
         raise Exception("El desplazamiento debe ser un número entero")
     return desplazamiento
 
@@ -88,17 +87,17 @@ def generar_matriz_playfair(palabra_clave):
     """
        
     # Obtener letras que faltan del alfabeto
-    letras_restantes = []
+    letras_restantes =[]
     for letra in alfabeto:
         if letra not in palabra_clave:
             letras_restantes.append(letra)
     
 
-    matriz = []
-    caracteres = list(palabra_clave) +letras_restantes+["1", "2", "3"]
+    matriz =[]
+    caracteres =list(palabra_clave) +letras_restantes+["1", "2", "3"]
     
     for i in range(6):
-        fila = []
+        fila =[]
         for j in range(5):
             fila.append(caracteres[i * 5 + j])
         matriz.append(fila)
@@ -113,7 +112,7 @@ def encontrar_posicion(matriz, caracter):
     """
     for i in range(6):
         for j in range(5):
-            if matriz[i][j] == caracter:
+            if matriz[i][j] ==caracter:
                 return (i, j)
     return None
 
@@ -129,30 +128,30 @@ def procesar_texto_playfair(texto):
     Salidas: lista de pares (cada par es un string de 2 caracteres)
     """
     # Eliminar espacios
-    texto_sin_espacios = ""
+    texto_sin_espacios =""
     for c in texto:
-        if c != " ":
-            texto_sin_espacios += c
+        if c !=" ":
+            texto_sin_espacios +=c
     
     # Separar letras repetidas con '1'
-    texto_procesado = ""
-    i = 0
+    texto_procesado =""
+    i =0
     while i < len(texto_sin_espacios):
-        texto_procesado += texto_sin_espacios[i]
-        if i + 1 < len(texto_sin_espacios) and texto_sin_espacios[i] == texto_sin_espacios[i+1]:
-            texto_procesado += "1"
+        texto_procesado +=texto_sin_espacios[i]
+        if i + 1 < len(texto_sin_espacios) and texto_sin_espacios[i] ==texto_sin_espacios[i+1]:
+            texto_procesado +="1"
         i+=1
     
     # Agrupar en pares
-    pares = []
-    i = 0
+    pares =[]
+    i =0
     while i < len(texto_procesado):
         if i + 1 < len(texto_procesado):
             pares.append(texto_procesado[i] + texto_procesado[i+1])
         else:
             # Si es impar, agregar '1' al final
             pares.append(texto_procesado[i] + "1")
-        i += 2
+        i +=2
     
     return pares
 
@@ -162,24 +161,24 @@ def codificar_par_playfair(par, matriz):
     Entradas: par (string de 2 caracteres), matriz 6x5
     Salidas: par codificado (string de 2 caracteres)
     """
-    a, b = par[0], par[1]
-    fila_a, col_a = encontrar_posicion(matriz, a)
-    fila_b, col_b = encontrar_posicion(matriz, b)
+    a, b =par[0], par[1]
+    fila_a, col_a =encontrar_posicion(matriz, a)
+    fila_b, col_b =encontrar_posicion(matriz, b)
     
     # Caso1: Diferente fila, diferente columna
-    if fila_a != fila_b and col_a != col_b:
+    if fila_a !=fila_b and col_a !=col_b:
         return matriz[fila_a][col_b] + matriz[fila_b][col_a]
     
     # Caso2: Misma fila, diferente columna (mover a la derecha)
-    elif fila_a == fila_b and col_a != col_b:
-        nueva_col_a = (col_a + 1) % 5
-        nueva_col_b = (col_b + 1) % 5
+    elif fila_a ==fila_b and col_a !=col_b:
+        nueva_col_a =(col_a + 1) % 5
+        nueva_col_b =(col_b + 1) % 5
         return matriz[fila_a][nueva_col_a] + matriz[fila_a][nueva_col_b]
     
     # Caso3: Diferente fila, misma columna (mover hacia abajo)
-    elif fila_a != fila_b and col_a == col_b:
-        nueva_fila_a = (fila_a + 1) % 6
-        nueva_fila_b = (fila_b + 1) % 6
+    elif fila_a !=fila_b and col_a ==col_b:
+        nueva_fila_a =(fila_a + 1) % 6
+        nueva_fila_b =(fila_b + 1) % 6
         return matriz[nueva_fila_a][col_a] + matriz[nueva_fila_b][col_a]
     
     # Misma fila, misma columna (no deberia pasar)
@@ -192,24 +191,24 @@ def decodificar_par_playfair(par, matriz):
     Entradas: par (string de 2 caracteres), matriz 6x5
     Salidas: par decodificado (string de 2 caracteres)
     """
-    a, b = par[0], par[1]
-    fila_a, col_a = encontrar_posicion(matriz, a)
-    fila_b, col_b = encontrar_posicion(matriz, b)
+    a, b =par[0], par[1]
+    fila_a, col_a =encontrar_posicion(matriz, a)
+    fila_b, col_b =encontrar_posicion(matriz, b)
     
     # Caso1: Diferente fila, diferente columna(es igual que en cod)
-    if fila_a != fila_b and col_a != col_b:
+    if fila_a !=fila_b and col_a !=col_b:
         return matriz[fila_a][col_b] + matriz[fila_b][col_a]
     
     # Caso2: Misma fila, diferente columna (mover a la izquierda)
-    elif fila_a == fila_b and col_a != col_b:
-        nueva_col_a = (col_a - 1) % 5
-        nueva_col_b = (col_b - 1) % 5
+    elif fila_a ==fila_b and col_a !=col_b:
+        nueva_col_a =(col_a - 1) % 5
+        nueva_col_b =(col_b - 1) % 5
         return matriz[fila_a][nueva_col_a] + matriz[fila_a][nueva_col_b]
     
     # Caso3:Diferente fila, misma columna (mover hacia arriba)
-    elif fila_a != fila_b and col_a == col_b:
-        nueva_fila_a = (fila_a - 1) % 6
-        nueva_fila_b = (fila_b - 1) % 6
+    elif fila_a !=fila_b and col_a ==col_b:
+        nueva_fila_a =(fila_a - 1) % 6
+        nueva_fila_b =(fila_b - 1) % 6
         return matriz[nueva_fila_a][col_a] + matriz[nueva_fila_b][col_a]
     
     else:
@@ -227,19 +226,19 @@ def cesarCod(texto, desplazamiento):
     Salidas: texto codificado (str)
     Restricciones: texto no vacío, desplazamiento entero
     """
-    texto_norm = normalizar_texto(texto)
-    desp = validar_desplazamiento(desplazamiento)
+    texto_norm =normalizar_texto(texto)
+    desp =validar_desplazamiento(desplazamiento)
     
     #asegurarse que este en rango 0.. 26
-    desplazamiento_efectivo = desp%len(alfabeto)
+    desplazamiento_efectivo =desp%len(alfabeto)
     
-    resultado = []
+    resultado =[]
     for letra in texto_norm:
-        if letra == " ":
+        if letra ==" ":
             resultado.append(" ")
         else:
-            posicion_actual = alfabeto.index(letra)
-            nueva_posicion = (posicion_actual + desplazamiento_efectivo) % len(alfabeto)
+            posicion_actual =alfabeto.index(letra)
+            nueva_posicion =(posicion_actual + desplazamiento_efectivo) % len(alfabeto)
             resultado.append(alfabeto[nueva_posicion])
     
     return "".join(resultado)
@@ -265,26 +264,26 @@ def monoCod(texto, palabra):
     Salidas:
     Texto Codificado en mono cifrado según la palabra clave indicada.
     """
-    texto_norm = normalizar_texto(texto)
-    clave_norm = normalizar_palabra_clave(palabra)
+    texto_norm =normalizar_texto(texto)
+    clave_norm =normalizar_palabra_clave(palabra)
     
-    #palabra clave + resto del alfabeto en orden
-    resto = [c for c in alfabeto if c not in clave_norm]
-    alfabeto_cifrado = list(clave_norm) + resto
+    #palabra clave +resto del alfabeto en orden
+    resto =[c for c in alfabeto if c not in clave_norm]
+    alfabeto_cifrado =list(clave_norm) +resto
     
     # mapeo original a cifrada
-    mapeo = {}
+    mapeo ={}
     #enumerate crea una asignacion indice-letra
     #entonces se ve como (0,a) ... (27, z)
     # luego i seria 0 y letra_orig seria a
     for i, letra_orig in enumerate(alfabeto):
-        mapeo[letra_orig] = alfabeto_cifrado[i]
+        mapeo[letra_orig] =alfabeto_cifrado[i]
     
     
     # cambio en el texto
-    resultado = []
+    resultado =[]
     for c in texto_norm:
-        if c == " ":
+        if c ==" ":
             resultado.append(" ")
         else:
             resultado.append(mapeo[c])
@@ -299,22 +298,22 @@ def monoDec(texto, palabra):
     Salidas:
     Texto Codificado en mono cifrado según la palabra clave indicada.
     """
-    texto_norm = normalizar_texto(texto)
-    clave_norm = normalizar_palabra_clave(palabra)
+    texto_norm =normalizar_texto(texto)
+    clave_norm =normalizar_palabra_clave(palabra)
     
     # alfabeto para cifrar
-    resto = [c for c in alfabeto if c not in clave_norm]
-    alfabeto_cifrado = list(clave_norm) + resto
+    resto =[c for c in alfabeto if c not in clave_norm]
+    alfabeto_cifrado =list(clave_norm) + resto
     
     # mapeo inverso de cod a og
-    mapeo_inverso = {}
+    mapeo_inverso ={}
     for i, letra_cifrada in enumerate(alfabeto_cifrado):
-        mapeo_inverso[letra_cifrada] = alfabeto[i]
+        mapeo_inverso[letra_cifrada] =alfabeto[i]
     
     # cambia el texto 
-    resultado = []
+    resultado =[]
     for c in texto_norm:
-        if c == " ":
+        if c ==" ":
             resultado.append(" ")
         else:
             if c not in mapeo_inverso:
@@ -330,26 +329,26 @@ def vigenereCod(texto, palabra_clave):
     Salidas: texto codificado (str)
     Restricciones: palabra_clave no vacia, texto normalizable
     """
-    texto_norm = normalizar_texto(texto)
-    clave_norm = normalizar_palabra_clave(palabra_clave)
+    texto_norm =normalizar_texto(texto)
+    clave_norm =normalizar_palabra_clave(palabra_clave)
     
-    clave_posiciones = []
+    clave_posiciones =[]
     for letra in clave_norm:
         clave_posiciones.append(alfabeto.index(letra))
     
-    resultado = []
-    idx_clave = 0
-    longitud_clave = len(clave_posiciones)
+    resultado =[]
+    idx_clave =0
+    longitud_clave =len(clave_posiciones)
     
     for letra in texto_norm:
-        if letra == " ":
+        if letra ==" ":
             resultado.append(" ")
         else:
-            pos_texto = alfabeto.index(letra)
-            pos_clave = clave_posiciones[idx_clave % longitud_clave]
-            nueva_pos = (pos_texto + pos_clave) % len(alfabeto)
+            pos_texto =alfabeto.index(letra)
+            pos_clave =clave_posiciones[idx_clave % longitud_clave]
+            nueva_pos =(pos_texto +pos_clave) % len(alfabeto)
             resultado.append(alfabeto[nueva_pos])
-            idx_clave += 1
+            idx_clave +=1
     
     return "".join(resultado)
 
@@ -360,28 +359,28 @@ def vigenereDec(texto, palabra_clave):
     Salidas: texto original (str)
     Restricciones: palabra_clave no vacía, texto normalizable
     """
-    texto_norm = normalizar_texto(texto)
-    clave_norm = normalizar_palabra_clave(palabra_clave)
+    texto_norm =normalizar_texto(texto)
+    clave_norm =normalizar_palabra_clave(palabra_clave)
     
-    clave_posiciones = []
+    clave_posiciones =[]
     for letra in clave_norm:
         clave_posiciones.append(alfabeto.index(letra))
     
-    resultado = []
-    idx_clave = 0
-    longitud_clave = len(clave_posiciones)
+    resultado =[]
+    idx_clave =0
+    longitud_clave =len(clave_posiciones)
     
     for letra in texto_norm:
-        if letra == " ":
+        if letra ==" ":
             resultado.append(" ")
         else:
             #lo mismo pero restando
             #checkear si esto funciona pls
-            pos_cifrada = alfabeto.index(letra)
-            pos_clave = clave_posiciones[idx_clave % longitud_clave]
-            nueva_pos = (pos_cifrada - pos_clave) % len(alfabeto)
+            pos_cifrada =alfabeto.index(letra)
+            pos_clave =clave_posiciones[idx_clave % longitud_clave]
+            nueva_pos =(pos_cifrada - pos_clave) % len(alfabeto)
             resultado.append(alfabeto[nueva_pos])
-            idx_clave += 1
+            idx_clave +=1
     
     return "".join(resultado)
 
@@ -393,31 +392,31 @@ def playfairCod(texto, palabra):
     Salidas: texto codificado (str)
     Restricciones: palabra clave no vacia
     """
-    texto_norm = normalizar_texto(texto)
-    palabra_norm = normalizar_palabra_clave(palabra)
+    texto_norm =normalizar_texto(texto)
+    palabra_norm =normalizar_palabra_clave(palabra)
     
     if not palabra_norm:
         raise Exception("La palabra clave no puede estar vacia")
     
 
-    matriz = generar_matriz_playfair(palabra_norm)
-    palabras_originales = texto_norm.split(" ")
-    resultado_final = []
+    matriz =generar_matriz_playfair(palabra_norm)
+    palabras_originales =texto_norm.split(" ")
+    resultado_final =[]
     
     for palabra_original in palabras_originales:
-        if palabra_original == "":
+        if palabra_original =="":
             resultado_final.append("")
             continue
 
-        pares = procesar_texto_playfair(palabra_original)
+        pares =procesar_texto_playfair(palabra_original)
      
-        pares_codificados = []
+        pares_codificados =[]
         for par in pares:
-            par_cod = codificar_par_playfair(par, matriz)
+            par_cod =codificar_par_playfair(par, matriz)
             pares_codificados.append(par_cod)
         
         #aqui se unen los pares que conforman una palabra
-        palabra_codificada = "".join(pares_codificados)
+        palabra_codificada ="".join(pares_codificados)
         resultado_final.append(palabra_codificada)
     
     #aqui se juntan las palabras
@@ -431,47 +430,47 @@ def playfairDec(texto, palabra):
     Restricciones: palabra clave no vacia
     """
 
-    palabra_norm = normalizar_palabra_clave(palabra)
+    palabra_norm =normalizar_palabra_clave(palabra)
     
     if not palabra_norm:
         raise Exception("La palabra clave no puede estar vacia")
     
 
-    matriz = generar_matriz_playfair(palabra_norm)
+    matriz =generar_matriz_playfair(palabra_norm)
     
     
-    texto_limpio = texto.strip()
-    palabras_codificadas = texto_limpio.split(" ")
+    texto_limpio =texto.strip()
+    palabras_codificadas =texto_limpio.split(" ")
     
-    resultado_final = []
+    resultado_final =[]
     
     for palabra_cod in palabras_codificadas:
-        if palabra_cod == "":
+        if palabra_cod =="":
             resultado_final.append("")
             continue
         
         # la palabra tiene qe tener longitud par
-        if len(palabra_cod) % 2 != 0:
+        if len(palabra_cod) % 2 !=0:
             raise Exception("El mensaje decodificado no tiene longitud par")
         
         
-        pares = []
+        pares =[]
         for i in range(0, len(palabra_cod), 2):
-            pares.append(palabra_cod[i] + palabra_cod[i + 1])
+            pares.append(palabra_cod[i] +palabra_cod[i +1])
         
         
-        pares_decodificados = []
+        pares_decodificados =[]
         for par in pares:
-            par_dec = decodificar_par_playfair(par, matriz)
+            par_dec =decodificar_par_playfair(par, matriz)
             pares_decodificados.append(par_dec)
         
-        palabra_decodificada = "".join(pares_decodificados)
+        palabra_decodificada ="".join(pares_decodificados)
         
         # elimina los 1,2,3
-        palabra_limpia = ""
+        palabra_limpia =""
         for c in palabra_decodificada:
             if c not in ["1", "2", "3"]:
-                palabra_limpia += c
+                palabra_limpia +=c
         
         resultado_final.append(palabra_limpia)
     
@@ -486,38 +485,38 @@ def railfenceCod(texto):
     Salidas: texto codificado (str)
     Restricciones: texto no vacio
     """
-    texto_norm = normalizar_texto(texto)
+    texto_norm =normalizar_texto(texto)
     
-    texto_guiones = ""
+    texto_guiones =""
     for c in texto_norm:
-        if c == " ":
-            texto_guiones += "-"
+        if c ==" ":
+            texto_guiones +="-"
         else:
-            texto_guiones += c
+            texto_guiones +=c
     
-    largo = len(texto_guiones)
-    while largo % 4 != 0:
-        texto_guiones += "-"
-        largo += 1
+    largo =len(texto_guiones)
+    while largo % 4 !=0:
+        texto_guiones +="-"
+        largo +=1
     
-    linea1 = ""
-    linea2 = ""
-    linea3 = ""
+    linea1 =""
+    linea2 =""
+    linea3 =""
     
     for i in range(largo):
-        resto = i % 4
-        if resto == 0:
-            linea1 += texto_guiones[i]
-        elif resto == 1 or resto == 3:
-            linea2 += texto_guiones[i]
+        resto =i % 4
+        if resto ==0:
+            linea1 +=texto_guiones[i]
+        elif resto ==1 or resto ==3:
+            linea2 +=texto_guiones[i]
         else:
-            linea3 += texto_guiones[i]
+            linea3 +=texto_guiones[i]
     
-    union = linea1 + linea2 + linea3
+    union =linea1 +linea2 +linea3
     
-    resultado = ""
+    resultado =""
     for i in range(0, len(union), 5):
-        resultado += union[i:i+5] + " "
+        resultado +=union[i:i+5] +" "
     
     return resultado.strip()
 
@@ -529,50 +528,50 @@ def railfenceDec(texto):
     Salidas: texto original (str)
     Restricciones: texto no vacio
     """
-    union = ""
+    union =""
     for c in texto:
-        if c != " ":
-            union += c
+        if c !=" ":
+            union +=c
     
-    if len(union) % 4 != 0:
+    if len(union) % 4 !=0:
         raise Exception("El texto codificado no tiene longitud multiple de 4")
     
-    largo_total = len(union)
-    largo_fila = largo_total // 4
+    largo_total =len(union)
+    largo_fila =largo_total // 4
     
-    linea1 = union[:largo_fila]
-    linea2 = union[largo_fila:largo_fila + largo_fila * 2]
-    linea3 = union[largo_fila + largo_fila * 2:]
+    linea1 =union[:largo_fila]
+    linea2 =union[largo_fila:largo_fila + largo_fila * 2]
+    linea3 =union[largo_fila + largo_fila * 2:]
     
-    resultado = ""
-    i1 = 0
-    i2 = 0
-    i3 = 0
+    resultado =""
+    i1=0
+    i2=0
+    i3=0
     
     for i in range(largo_total):
-        resto = i % 4
-        if resto == 0:
-            resultado += linea1[i1]
-            i1 += 1
-        elif resto == 1:
-            resultado += linea2[i2]
-            i2 += 1
-        elif resto == 2:
-            resultado += linea3[i3]
-            i3 += 1
+        resto =i % 4
+        if resto ==0:
+            resultado +=linea1[i1]
+            i1 +=1
+        elif resto ==1:
+            resultado +=linea2[i2]
+            i2 +=1
+        elif resto ==2:
+            resultado +=linea3[i3]
+            i3 +=1
         else:
-            resultado += linea2[i2]
-            i2 += 1
+            resultado +=linea2[i2]
+            i2 +=1
     
-    resultado_final = ""
+    resultado_final =""
     for c in resultado:
-        if c == "-":
-            resultado_final += " "
+        if c =="-":
+            resultado_final +=" "
         else:
-            resultado_final += c
+            resultado_final +=c
     
     while resultado_final.endswith(" "):
-        resultado_final = resultado_final[:-1]
+        resultado_final =resultado_final[:-1]
     
     return resultado_final
 
@@ -580,25 +579,90 @@ def railfenceDec(texto):
 def escitalaCod(texto, lineas):
     """
     Codifica usando cifrado Escitala.
-    Entradas: texto (str), lineas (int)
+    Entradas: texto (str), lineas (int) - cantidad de letras por vuelta
     Salidas: texto codificado (str)
-    Restricciones: lineas > 1 entero
+    Restricciones: lineas > 1 entero, texto no vacio
     """
-    if type(lineas) != int or lineas <= 1:
+    if type(lineas) !=int or lineas <=1:
         raise Exception("El numero de lineas debe ser un entero mayor que 1")
-    texto_norm = normalizar_texto(texto)
-    return "por implementar"
+    
+    texto_norm =normalizar_texto(texto)
+    
+    texto_guiones =""
+    for c in texto_norm:
+        if c ==" ":
+            texto_guiones +="-"
+        else:
+            texto_guiones +=c
+    
+    largo =len(texto_guiones)
+    while largo % lineas !=0:
+        texto_guiones +="-"
+        largo +=1
+    
+    lineas_texto =[]
+    for i in range(lineas):
+        lineas_texto.append("")
+    
+    for i in range(largo):
+        pos_fila =i % lineas
+        lineas_texto[pos_fila] +=texto_guiones[i]
+    
+    union =""
+    for fila in lineas_texto:
+        union +=fila
+    
+    resultado =""
+    for i in range(0, len(union), 5):
+        resultado +=union[i:i+5] + " "
+    
+    return resultado.strip()
+
 
 def escitalaDec(texto, lineas):
     """
     Decodifica usando cifrado Escitala.
     Entradas: texto codificado (str), lineas (int)
     Salidas: texto original (str)
-    Restricciones: lineas > 1 entero
+    Restricciones: lineas >1 entero
     """
-    if type(lineas) != int or lineas <= 1:
+    if type(lineas)!=int or lineas<=1:
         raise Exception("El numero de lineas debe ser un entero mayor que 1")
-    return "por implementar"
+    
+    union =""
+    for c in texto:
+        if c !=" ":
+            union+=c
+    
+    largo_total =len(union)
+    
+    if largo_total % lineas !=0:
+        raise Exception("El texto codificado no tiene longitud multiple de lineas")
+    
+    largo_fila =largo_total//lineas
+    
+    lineas_texto =[]
+    inicio =0
+    for i in range(lineas):
+        lineas_texto.append(union[inicio:inicio + largo_fila])
+        inicio +=largo_fila
+    
+    resultado =""
+    for i in range(largo_total):
+        pos_fila =i % lineas
+        resultado +=lineas_texto[pos_fila][i//lineas]
+    
+    resultado_final =""
+    for c in resultado:
+        if c =="-":
+            resultado_final +=" "
+        else:
+            resultado_final +=c
+    
+    while resultado_final.endswith(" "):
+        resultado_final =resultado_final[:-1]
+    
+    return resultado_final
 
 # FUNCION GENERICA PARA CODIFICAR y DECODIFICAR 
 def ejecutar_cifrado(nombre, func_cod, func_dec, necesita_palabra=False, necesita_desplazamiento=False, necesita_lineas=False):
@@ -610,50 +674,50 @@ def ejecutar_cifrado(nombre, func_cod, func_dec, necesita_palabra=False, necesit
         try:
             print("1. Codificar")
             print("2. Decodificar")
-            opcion = input("Seleccione: ")
+            opcion =input("Seleccione: ")
             if opcion not in ("1", "2"):
                 raise Exception("Opcion invalida")
             
-            texto = input("Ingrese el mensaje: ")
+            texto =input("Ingrese el mensaje: ")
             if not texto:
                 raise Exception("El mensaje no puede estar vacio")
             
             #cesar
             if necesita_desplazamiento:
-                desplazamiento = int(input("Ingrese el desplazamiento (entero): "))
+                desplazamiento =int(input("Ingrese el desplazamiento (entero): "))
             #mono, vigenere, playfair
             if necesita_palabra:
-                palabra = input("Ingrese la palabra clave (sin espacios): ")
+                palabra =input("Ingrese la palabra clave (sin espacios): ")
             
             if necesita_lineas:
-                lineas = int(input("Ingrese el numero de lineas (mayor que 1): "))
-                if lineas <= 1:
+                lineas =int(input("Ingrese el numero de lineas (mayor que 1): "))
+                if lineas <=1:
                     raise Exception("El numero de lineas debe ser mayor que 1")
             
             #codficaciones
-            if opcion == "1":
+            if opcion =="1":
                 #mono, vigenere, playfair, 
                 if necesita_palabra:
-                    resultado = func_cod(texto, palabra)
+                    resultado =func_cod(texto, palabra)
                 #cesar
                 elif necesita_desplazamiento:
-                    resultado = func_cod(texto, desplazamiento)
+                    resultado =func_cod(texto, desplazamiento)
                 #esci
                 elif necesita_lineas:
-                    resultado = func_cod(texto, lineas)
+                    resultado =func_cod(texto, lineas)
                 #rail
                 else:
-                    resultado = func_cod(texto)
+                    resultado =func_cod(texto)
                 print(f"\nTexto CODIFICADO: {resultado}")
             else:
                 if necesita_palabra:
-                    resultado = func_dec(texto, palabra)
+                    resultado =func_dec(texto, palabra)
                 elif necesita_desplazamiento:
-                    resultado = func_dec(texto, desplazamiento)
+                    resultado =func_dec(texto, desplazamiento)
                 elif necesita_lineas:
-                    resultado = func_dec(texto, lineas)
+                    resultado =func_dec(texto, lineas)
                 else:
-                    resultado = func_dec(texto)
+                    resultado =func_dec(texto)
                 print(f"\nTexto DECODIFICADO: {resultado}")
             break
             
@@ -689,22 +753,22 @@ def main():
     
     while True:
         mostrar_menu()
-        opcion = input("Seleccione una opcion: ")
+        opcion =input("Seleccione una opcion: ")
         
-        if opcion == "0":
+        if opcion =="0":
             print("\nGracias por usar el programa! Hasta luego.\n")
             return
-        elif opcion == "1":
+        elif opcion =="1":
             ejecutar_cifrado("CIFRADO CESAR", cesarCod, cesarDec, necesita_desplazamiento=True)
-        elif opcion == "2":
+        elif opcion =="2":
             ejecutar_cifrado("CIFRADO MONOALFABETICO", monoCod, monoDec, necesita_palabra=True)
-        elif opcion == "3":
+        elif opcion =="3":
             ejecutar_cifrado("CIFRADO VIGENERE", vigenereCod, vigenereDec, necesita_palabra=True)
-        elif opcion == "4":
+        elif opcion =="4":
             ejecutar_cifrado("CIFRADO PLAYFAIR", playfairCod, playfairDec, necesita_palabra=True)
-        elif opcion == "5":
+        elif opcion =="5":
             ejecutar_cifrado("CIFRADO RAIL FENCE", railfenceCod, railfenceDec)
-        elif opcion == "6":
+        elif opcion =="6":
             ejecutar_cifrado("CIFRADO ESCITALA", escitalaCod, escitalaDec, necesita_lineas=True)
         else:
             print("\nOpcion no valida. Elija una opcion del 0 al 6.\n")
@@ -712,7 +776,7 @@ def main():
         input("\nPresione Enter para continuar...")
 
 
-if __name__ == "__main__":
+if __name__ =="__main__":
 
 
     main()
