@@ -9,10 +9,10 @@ columnas = 50
 tick = 10
 reglas_actuales = "B3/S23"
 
-def generar_matriz(filas, columnas):
+def generar_matriz_aleatoria(filas, columnas):
     """Funcion que retorna una matriz de las dimensiones
     especificadas con valores enteros aleatorios de 0 o 1"""
-    return [[randint(0, 1) for c in range(columnas)] for f in range(filas)]
+    return [[1 if randint(1, 100) <= 30 else 0 for c in range(columnas)] for f in range(filas)]
 
 def generar_matriz_vacia(filas, columnas):
     """Funcion que retorna una matriz de las dimensiones
@@ -138,25 +138,32 @@ def guardar_estado(M, filename="automata_save.pkl"):
         easygui.msgbox(f"Error al guardar: {e}", "Error")
         return False
 
-def cargar_estado(filename="automata_upload.pkl"):
+def cargar_estado(filename="automata_save.pkl"):
     """Carga el estado completo desde un archivo usando pickle"""
     global tam, reglas_actuales, filas, columnas
+    
+    # Solicitar nombre del archivo
+    nombre_archivo = easygui.enterbox("Ingrese el nombre del archivo a cargar (ej. automata_save.pkl):", 
+                                      "Cargar estado", default=filename)
+    if not nombre_archivo:
+        return None
+    
     try:
-        with open(filename, 'rb') as f:
+        with open(nombre_archivo, 'rb') as f:
             datos = pickle.load(f)
         tam = datos['tam']
         reglas_actuales = datos['reglas']
         filas = datos['filas']
         columnas = datos['columnas']
-        easygui.msgbox(f"Estado cargado desde {filename}", "Carga exitosa")
+        easygui.msgbox(f"Estado cargado desde {nombre_archivo}", "Carga exitosa")
         return datos['matriz']
     except FileNotFoundError:
-        easygui.msgbox(f"No se encontro el archivo {filename}", "Error")
+        easygui.msgbox(f"No se encontro el archivo {nombre_archivo}", "Error")
         return None
     except Exception as e:
         easygui.msgbox(f"Error al cargar: {e}", "Error")
         return None
-
+    
 def main():
     global tam, filas, columnas, tick, reglas_actuales
     
@@ -166,7 +173,7 @@ def main():
     
     pygame.init()
     clock = pygame.time.Clock()
-    M = generar_matriz(filas, columnas)
+    M = generar_matriz_aleatoria(filas, columnas)
     w, h = columnas * tam, filas * tam
     window = pygame.display.set_mode((w, h))
     pygame.display.set_caption("Juego de la Vida - Life-Like")
@@ -198,14 +205,13 @@ def main():
                 
                 # Tecla R para reiniciar con valores aleatorios
                 elif event.key == pygame.K_r:
-                    M = generar_matriz(filas, columnas)
+                    M = generar_matriz_aleatoria(filas, columnas)
                 
-                # Tecla B para reiniciar con valores 0
+                # Tecla B para reiniciar con valores neutros (ceros)
                 elif event.key == pygame.K_b:
                     M = generar_matriz_vacia(filas, columnas)
             
             if event.type == pygame.MOUSEBUTTONDOWN:
-                # cambio con clic del mouse
                 x, y = pygame.mouse.get_pos()
                 f = y // tam
                 c = x // tam
@@ -220,7 +226,7 @@ def main():
                 if M[f][c] == 1:
                     x = c * tam
                     y = f * tam
-                    pygame.draw.rect(window, (0, 255, 128), (x, y, tam, tam))
+                    pygame.draw.rect(window, (25, 25, 112), (x, y, tam, tam))
         
         # Dibujar lineas de la cuadricula
         for f in range(filas + 1):
@@ -228,13 +234,13 @@ def main():
         for c in range(columnas + 1):
             pygame.draw.line(window, (40, 40, 40), (c * tam, 0), (c * tam, h))
         
-        # info superior
+        # Mostrar informacion en pantalla
         font = pygame.font.Font(None, 24)
         info_text = f"Reglas: {reglas_actuales} | {'PAUSADO' if pausa else 'EJECUTANDO'}"
         text = font.render(info_text, True, (255, 255, 255))
         window.blit(text, (10, 10))
         
-        # controles inferior
+        # Mostrar controles
         controles = font.render("ESPACIO: Pausa  G: Guardar  C: Cargar  R: Aleatorio  B: Limpiar", True, (200, 200, 200))
         window.blit(controles, (10, h - 25))
         
