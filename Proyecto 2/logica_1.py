@@ -6,6 +6,16 @@ import os
 
 # convierte bytes a la unidad mas adecuada KB MB GB TB
 def formato_tamano(bytes):
+    """ convierte una cantidad de bytes a la unidad mas adecuada.
+    entradas: bytes (int) cantidad de bytes a convertir.
+    salidas: string con el valor y la unidad (ej 1.50 MB).
+    restricciones: bytes debe ser un numero entero mayor o igual a cero.
+    """
+    if not isinstance(bytes, int):
+        raise TypeError("bytes debe ser un entero")
+    if bytes < 0:
+        raise ValueError("bytes no puede ser negativo")
+
     unidades = ["B", "KB", "MB", "GB", "TB"]
     valor = float(bytes)
     i = 0
@@ -18,6 +28,14 @@ def formato_tamano(bytes):
 
 # revisa si una ruta es carpeta sin reventar por permisos
 def es_carpeta(ruta):
+    """ revisa si una ruta corresponde a una carpeta existente.
+    entradas: ruta (string) ruta a verificar.
+    salidas: True si es carpeta False si no lo es.
+    restricciones: ruta debe ser un string.
+    """
+    if not isinstance(ruta, str):
+        raise TypeError("ruta debe ser un string")
+
     try:
         return os.path.isdir(ruta)
     except OSError:
@@ -26,6 +44,14 @@ def es_carpeta(ruta):
 
 # crea un nodo nuevo con la estructura que usamos en todo el programa
 def nuevo_nodo(ruta):
+    """ crea un nodo de carpeta con la estructura usada en el programa.
+    entradas: ruta (string) ruta de la carpeta.
+    salidas: diccionario con nombre ruta tamano es_carpeta hijos y archivos_directos.
+    restricciones: ruta debe ser un string.
+    """
+    if not isinstance(ruta, str):
+        raise TypeError("ruta debe ser un string")
+
     nodo = {}
     nombre = os.path.basename(ruta)
     # si basename viene vacio (raiz tipo C:\ o /) usar la ruta
@@ -42,6 +68,16 @@ def nuevo_nodo(ruta):
 
 # analiza una carpeta de forma recursiva y devuelve su nodo
 def analizar(ruta):
+    """ analiza una carpeta de forma recursiva y arma su arbol de nodos.
+    entradas: ruta (string) ruta de la carpeta a analizar.
+    salidas: nodo (diccionario) con el tamano total y los hijos analizados.
+    restricciones: ruta debe ser un string y debe ser una carpeta valida.
+    """
+    if not isinstance(ruta, str):
+        raise TypeError("ruta debe ser un string")
+    if not os.path.isdir(ruta):
+        raise ValueError("la ruta no es una carpeta valida")
+
     nodo = nuevo_nodo(ruta)
 
     # si no se puede leer la carpeta se devuelve vacia
@@ -81,6 +117,16 @@ def analizar(ruta):
 
 # recorre el arbol y junta todos los archivos en una lista
 def juntar_archivos(nodo, lista):
+    """ recorre el arbol y junta todos los archivos en una lista.
+    entradas: nodo (diccionario) raiz del recorrido, lista (list) donde se acumulan.
+    salidas: ninguna, la lista se modifica con los archivos encontrados.
+    restricciones: nodo debe ser un diccionario y lista debe ser una lista.
+    """
+    if not isinstance(nodo, dict):
+        raise TypeError("nodo debe ser un diccionario")
+    if not isinstance(lista, list):
+        raise TypeError("lista debe ser una lista")
+
     for hijo in nodo["hijos"]:
         if hijo["es_carpeta"]:
             juntar_archivos(hijo, lista)
@@ -90,6 +136,14 @@ def juntar_archivos(nodo, lista):
 
 # saca los 10 archivos mas grandes de todo el arbol
 def archivos_grandes(nodo):
+    """ obtiene los 10 archivos mas grandes de todo el arbol.
+    entradas: nodo (diccionario) raiz del arbol analizado.
+    salidas: lista con hasta 10 nodos de archivo ordenados de mayor a menor.
+    restricciones: nodo debe ser un diccionario.
+    """
+    if not isinstance(nodo, dict):
+        raise TypeError("nodo debe ser un diccionario")
+
     lista = []
     juntar_archivos(nodo, lista)
     # ordenar de mayor a menor por tamano
@@ -99,6 +153,16 @@ def archivos_grandes(nodo):
 
 #recorre el arbol y junta todas las carpetas
 def juntar_carpetas(nodo, lista):
+    """ recorre el arbol y junta todas las carpetas en una lista.
+    entradas: nodo (diccionario) raiz del recorrido, lista (list) donde se acumulan.
+    salidas: ninguna, la lista se modifica con las carpetas encontradas.
+    restricciones: nodo debe ser un diccionario y lista debe ser una lista.
+    """
+    if not isinstance(nodo, dict):
+        raise TypeError("nodo debe ser un diccionario")
+    if not isinstance(lista, list):
+        raise TypeError("lista debe ser una lista")
+
     for hijo in nodo["hijos"]:
         if hijo["es_carpeta"]:
             lista.append(hijo)
@@ -107,6 +171,14 @@ def juntar_carpetas(nodo, lista):
 
 # saca los 10 directorios con mas archivos directos
 def directorios_llenos(nodo):
+    """ obtiene los 10 directorios con mas archivos directos.
+    entradas: nodo (diccionario) raiz del arbol analizado.
+    salidas: lista con hasta 10 nodos de carpeta ordenados por archivos directos.
+    restricciones: nodo debe ser un diccionario.
+    """
+    if not isinstance(nodo, dict):
+        raise TypeError("nodo debe ser un diccionario")
+
     lista = []
     # la raiz tambien cuenta
     lista.append(nodo)
@@ -118,6 +190,11 @@ def directorios_llenos(nodo):
 
 # main para probar el modulo solo sin la parte grafica
 def main():
+    """ prueba el modulo solo sin la parte grafica mostrando los reportes en consola.
+    entradas: ninguna, pide la carpeta por consola.
+    salidas: ninguna, imprime los resultados en pantalla.
+    restricciones: la carpeta ingresada debe existir y ser valida.
+    """
     ruta = input("ingrese la carpeta a analizar: ")
     if not es_carpeta(ruta):
         print("la ruta no es una carpeta valida")
